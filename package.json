@@ -1,0 +1,53 @@
+{
+  "name": "create-folder-structure",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "author": "stavalfi <stava@wix.com>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "test": "ava",
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "prepublish": "yarn clean && yarn test && yarn build"
+  },
+  "dependencies": {
+    "@types/tmp": "^0.1.0",
+    "fs-extra": "^8.1.0",
+    "mkdirp": "^0.5.1",
+    "tmp-promise": "^2.0.2"
+  },
+  "devDependencies": {
+    "@types/chance": "^1.0.8",
+    "@types/fs-extra": "^8.0.1",
+    "@types/mkdirp": "^0.5.2",
+    "@types/node": "^13.1.0",
+    "@types/path-exists": "^4.0.2",
+    "ava": "^2.4.0",
+    "chance": "^1.1.4",
+    "is-directory": "^0.3.1",
+    "path-exists": "^4.0.0",
+    "prettier": "^1.19.1",
+    "ts-node": "^8.5.4",
+    "typescript": "^3.7.4"
+  },
+  "ava": {
+    "failWithoutAssertions": false,
+    "files": [
+      "tests/**/*.spec.ts"
+    ],
+    "compileEnhancements": false,
+    "extensions": [
+      "ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ]
+  },
+  "files": [
+    "dist",
+    "src",
+    "tests",
+    "README.md"
+  ]
+}

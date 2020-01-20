@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "strict": true,
+    "noImplicitAny": true,
+    "outDir": "dist"
+  },
+  "include": ["src"]
+}
