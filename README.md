@@ -10,7 +10,7 @@ yarn add --dev create-folder-structure
 
 ----
 
-1. Create folder structure
+1. Create folder
 
    ```typescript
    import createFolderStructure from 'create-folder-structure'
@@ -37,7 +37,7 @@ yarn add --dev create-folder-structure
    })
    ```
 
-2. Create anonymous folder creation
+2. Create anonymous folder
 
    ```typescript
    import createFolderStructure from 'create-folder-structure'
@@ -61,7 +61,7 @@ yarn add --dev create-folder-structure
    })
    ```
 
-4. Create anonymous file creation
+4. Create anonymous file
 
    ```typescript
    import createFolderStructure from 'create-folder-structure'
