@@ -1,13 +1,13 @@
 {
   "name": "create-folder-structure",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/index.js",
   "author": "stavalfi <stava@wix.com>",
   "license": "MIT",
   "private": false,
   "scripts": {
     "test": "ava",
-    "build": "tsc",
+    "build": "yarn clean && tsc",
     "clean": "rm -rf dist",
     "prepublish": "yarn clean && yarn test && yarn build"
   },
