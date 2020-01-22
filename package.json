@@ -1,6 +1,6 @@
 {
   "name": "create-folder-structure",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "dist/index.js",
   "author": "stavalfi <stava@wix.com>",
   "license": "MIT",

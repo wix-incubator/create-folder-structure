@@ -46,11 +46,9 @@ const mkdirpPromise = (complexPath: string) =>
   new Promise((res, rej) => mkdirp(complexPath, err => (err ? rej(err) : res())))
 
 async function createFolderStructureRecursively(structure: FolderStructure, options: { cwd: string }): Promise<void> {
-  debugger
   return (
     Object.entries(structure)
       .map(([key, value]) => async () => {
-        debugger
         if (typeof value === 'string') {
           await mkdirpPromise(path.dirname(path.join(options.cwd, key)))
           return fsExtra.writeFile(path.join(options.cwd, key), value)
