@@ -4,12 +4,9 @@ import createFolderStructure from '../src'
 import * as fse from 'fs-extra'
 import * as pathExists from 'path-exists'
 import * as path from 'path'
+import { assertFileExist, assertFolderExist, TestContext } from './utils'
 
 const chance = Chance()
-
-type TestContext = {
-  cleanup: () => Promise<void>
-}
 
 const test = testWithTypedContext as TestInterface<TestContext>
 
@@ -140,17 +137,57 @@ test('7 - multi folders structure - with shortcuts', async t => {
   await assertFolderExist(t, path.join(entryPath, 'folder6/folder7'))
 })
 
-const assertFileExist = async (t: ExecutionContext<TestContext>, filePath: string, fileContent: string) => {
-  t.true(await pathExists(filePath))
-  t.is((await fse.readFile(filePath)).toString(), fileContent)
-}
+test('8 - leafs with extension will automatically be files and not folders', async t => {
+  const [hash1, hash2, hash3, hash4] = [chance.hash(), chance.hash(), chance.hash(), chance.hash()]
+  const { entryPath, cleanup } = await createFolderStructure({
+    entryName: 'folder1',
+    content: {
+      ['file1.json']: {},
+    },
+  })
 
-const isDirectory = (folderPath: string) =>
-  new Promise((res, rej) =>
-    require('is-directory')(folderPath, (err: any, result: boolean) => (err ? rej(err) : res(result))),
-  )
+  t.context.cleanup = cleanup
 
-const assertFolderExist = async (t: ExecutionContext<TestContext>, folderPath: string) => {
-  t.true(await pathExists(folderPath))
-  t.true(await isDirectory(folderPath))
-}
+  await assertFileExist(t, path.join(entryPath, 'file1.json'), JSON.stringify({}))
+})
+
+test('9 - leafs with extension will automatically be files and not folders', async t => {
+  const { entryPath, cleanup } = await createFolderStructure({
+    entryName: 'folder1',
+    content: {
+      ['file1.json']: {
+        a: 1,
+        b: 2,
+      },
+    },
+  })
+
+  t.context.cleanup = cleanup
+
+  await assertFileExist(t, path.join(entryPath, 'file1.json'), JSON.stringify({ a: 1, b: 2 }, null, 2))
+})
+
+test('10 - leafs with extension will automatically be files and not folders', async t => {
+  const { entryPath, cleanup } = await createFolderStructure({
+    entryName: 'file1.json',
+    content: {},
+  })
+
+  t.context.cleanup = cleanup
+
+  await assertFileExist(t, entryPath, JSON.stringify({}))
+})
+
+test('11 - leafs with extension will automatically be files and not folders', async t => {
+  const { entryPath, cleanup } = await createFolderStructure({
+    entryName: 'file1.json',
+    content: {
+      a: 1,
+      b: 2,
+    },
+  })
+
+  t.context.cleanup = cleanup
+
+  await assertFileExist(t, entryPath, JSON.stringify({ a: 1, b: 2 }, null, 2))
+})

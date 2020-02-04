@@ -9,7 +9,7 @@ export type FolderStructure = {
 
 export type EntryStructure = {
   entryName?: string
-  content: string | FolderStructure
+  content: string | {} | FolderStructure
 }
 
 export default async function createFolderStructure(
@@ -18,11 +18,14 @@ export default async function createFolderStructure(
   entryPath: string
   cleanup: () => Promise<void>
 }> {
-  if (typeof structure.content === 'string') {
+  if (typeof structure.content === 'string' || structure.entryName?.includes('.')) {
     const { path: dirPath } = structure.entryName ? await tmp.dir() : await tmp.file()
     const cleanup = () => fsExtra.remove(dirPath)
     const entryPath = structure.entryName ? path.join(dirPath, structure.entryName) : dirPath
-    await fsExtra.writeFile(entryPath, structure.content)
+    await fsExtra.writeFile(
+      entryPath,
+      typeof structure.content === 'string' ? structure.content : JSON.stringify(structure.content, null, 2),
+    )
     return {
       entryPath,
       cleanup,
@@ -49,9 +52,12 @@ async function createFolderStructureRecursively(structure: FolderStructure, opti
   return (
     Object.entries(structure)
       .map(([key, value]) => async () => {
-        if (typeof value === 'string') {
+        if (typeof value === 'string' || key.includes('.')) {
           await mkdirpPromise(path.dirname(path.join(options.cwd, key)))
-          return fsExtra.writeFile(path.join(options.cwd, key), value)
+          return fsExtra.writeFile(
+            path.join(options.cwd, key),
+            typeof value === 'string' ? value : JSON.stringify(value, null, 2),
+          )
         } else {
           await mkdirpPromise(path.join(options.cwd, key))
           return createFolderStructureRecursively(value, { ...options, cwd: path.join(options.cwd, key) })

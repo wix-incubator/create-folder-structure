@@ -1,13 +1,16 @@
 {
   "name": "create-folder-structure",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "main": "dist/index.js",
   "author": "stavalfi <stava@wix.com>",
   "license": "MIT",
   "private": false,
+  "repository": {
+    "url": "https://github.com/wix-incubator/create-folder-structure"
+  },
   "scripts": {
     "test": "ava",
-    "build": "yarn clean && tsc",
+    "build": "yarn pretty-quick && yarn clean && tsc",
     "clean": "rm -rf dist",
     "prepublish": "yarn clean && yarn test && yarn build"
   },
@@ -15,6 +18,7 @@
     "@types/tmp": "^0.1.0",
     "fs-extra": "^8.1.0",
     "mkdirp": "^0.5.1",
+    "pretty-quick": "^2.0.1",
     "tmp-promise": "^2.0.2"
   },
   "devDependencies": {

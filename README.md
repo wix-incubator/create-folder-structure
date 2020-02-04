@@ -8,7 +8,7 @@ Declarative complex file/folder creator
 yarn add --dev create-folder-structure
 ```
 
-----
+---
 
 1. Create folder
 
@@ -68,5 +68,27 @@ yarn add --dev create-folder-structure
 
    const { entryPath, cleanup } = await createFolderStructure({
      content: 'file content1',
+   })
+   ```
+
+5. you can specify file with an extension and give it a JSON value instead of a string value:
+
+   ```typescript
+   import createFolderStructure from 'create-folder-structure'
+
+   const { entryPath, cleanup } = await createFolderStructure({
+     entryName: 'file.ext',
+     content: 1,
+   })
+   ```
+
+   ```typescript
+   import createFolderStructure from 'create-folder-structure'
+
+   const { entryPath, cleanup } = await createFolderStructure({
+     entryName: 'dir1',
+     content: {
+       'file.ext': { a: 1, b: 2 },
+     },
    })
    ```
