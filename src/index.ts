@@ -18,7 +18,7 @@ export default async function createFolderStructure(
   entryPath: string
   cleanup: () => Promise<void>
 }> {
-  if (typeof structure.content === 'string' || structure.entryName?.includes('.')) {
+  if (typeof structure.content === 'string' || structure.entryName?.endsWith('.json')) {
     const { path: dirPath } = structure.entryName ? await tmp.dir() : await tmp.file()
     const cleanup = () => fsExtra.remove(dirPath)
     const entryPath = structure.entryName ? path.join(dirPath, structure.entryName) : dirPath
@@ -52,7 +52,7 @@ async function createFolderStructureRecursively(structure: FolderStructure, opti
   return (
     Object.entries(structure)
       .map(([key, value]) => async () => {
-        if (typeof value === 'string' || key.includes('.')) {
+        if (typeof value === 'string' || key.endsWith('.json')) {
           await mkdirpPromise(path.dirname(path.join(options.cwd, key)))
           return fsExtra.writeFile(
             path.join(options.cwd, key),

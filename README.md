@@ -71,13 +71,13 @@ yarn add --dev create-folder-structure
    })
    ```
 
-5. you can specify file with an extension and give it a JSON value instead of a string value:
+5. you can specify file with an json extension and give it a JSON value instead of a string value:
 
    ```typescript
    import createFolderStructure from 'create-folder-structure'
 
    const { entryPath, cleanup } = await createFolderStructure({
-     entryName: 'file.ext',
+     entryName: 'file.json',
      content: 1,
    })
    ```
@@ -88,7 +88,7 @@ yarn add --dev create-folder-structure
    const { entryPath, cleanup } = await createFolderStructure({
      entryName: 'dir1',
      content: {
-       'file.ext': { a: 1, b: 2 },
+       'file.json': { a: 1, b: 2 },
      },
    })
    ```

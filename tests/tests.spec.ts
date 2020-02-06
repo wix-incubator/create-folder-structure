@@ -191,3 +191,20 @@ test('11 - leafs with extension will automatically be files and not folders', as
 
   await assertFileExist(t, entryPath, JSON.stringify({ a: 1, b: 2 }, null, 2))
 })
+
+test('11 - non-json-extension will be a folder if the content is object', async t => {
+  const [hash1, hash2] = [chance.hash(), chance.hash()]
+  const { entryPath, cleanup } = await createFolderStructure({
+    entryName: 'file1.non_json',
+    content: {
+      a: hash1,
+      b: hash2,
+    },
+  })
+
+  t.context.cleanup = cleanup
+
+  await assertFolderExist(t, entryPath)
+  await assertFileExist(t, path.join(entryPath, 'a'), hash1)
+  await assertFileExist(t, path.join(entryPath, 'b'), hash2)
+})
