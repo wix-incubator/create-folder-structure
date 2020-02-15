@@ -39,7 +39,7 @@ export default async function createFolderStructure(
     }
     await createFolderStructureRecursively(structure.content, { cwd: entryPath })
     return {
-      entryPath,
+      entryPath: await fsExtra.realpath(entryPath),
       cleanup,
     }
   }

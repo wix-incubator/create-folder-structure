@@ -10,6 +10,8 @@ yarn add --dev create-folder-structure
 
 ---
 
+`createFolderStructure` returns `realpath` without any symbolic links (using `fs.realpath`)
+
 1. Create folder
 
    ```typescript
