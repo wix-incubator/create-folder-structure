@@ -2,6 +2,7 @@ import * as fsExtra from 'fs-extra'
 import * as path from 'path'
 import * as tmp from 'tmp-promise'
 import * as mkdirp from 'mkdirp'
+import * as chance from 'chance'
 
 export type FolderStructure = {
   [name: string]: string | FolderStructure
@@ -12,9 +13,20 @@ export type EntryStructure = {
   content: string | {} | FolderStructure
 }
 
-export async function createFolderStructureWith(content: string | {} | FolderStructure): Promise<string> {
+export async function createFolder(content: FolderStructure): Promise<string> {
   const originalResult = await createFolderStructure({ content })
   return originalResult.entryPath
+}
+
+export async function createFile(content: string | {}): Promise<string> {
+  const fileName = `${chance()
+    .hash()
+    .toLocaleLowerCase()}.json`
+  const result =
+    typeof content === 'string'
+      ? await createFolderStructure({ content })
+      : await createFolderStructure({ entryName: fileName, content })
+  return result.entryPath
 }
 
 export default async function createFolderStructure(

@@ -12,6 +12,38 @@ yarn add --dev create-folder-structure
 
 `createFolderStructure` returns `realpath` without any symbolic links (using `fs.realpath`)
 
+1. Create anonymous folder
+
+   ```typescript
+   import { createFolder } from 'create-folder-structure'
+
+   const entryPath = await createFolder({
+     file7: 'file content7',
+     ['folder6/folder7']: {},
+   })
+   ```
+
+2. Create anonymous file
+
+   ```typescript
+   import { createFile } from 'create-folder-structure'
+
+   const entryPath = await createFile('file content')
+   ```
+
+   ```typescript
+   import { createFile } from 'create-folder-structure'
+
+   const entryPath = await createFile({
+     key1: 'value',
+     key2: 1,
+   })
+   ```
+
+---
+
+### Full API
+
 1. Create folder
 
    ```typescript
@@ -94,28 +126,3 @@ yarn add --dev create-folder-structure
      },
    })
    ```
-
----
-
-`createFolderStructureWith` is a syntax sugar provided for `createFolderStructure` in order to reduce the boilerplate
-
-
-1. Create anonymous folder
-
-   ```typescript
-   import {createFolderStructureWith} from 'create-folder-structure'
-
-   const entryPath = await createFolderStructureWith({
-       file7: 'file content7',
-       ['folder6/folder7']: {},
-     })
-   ```
-
-2. Create anonymous file
-
-   ```typescript
-   import {createFolderStructureWith} from 'create-folder-structure'
-
-   const entryPath = await createFolderStructureWith('file content1')
-   ```
-

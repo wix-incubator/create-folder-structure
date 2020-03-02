@@ -1,9 +1,7 @@
+import testWithTypedContext, { TestInterface } from 'ava'
 import * as Chance from 'chance'
-import testWithTypedContext, { TestInterface, ExecutionContext } from 'ava'
-import createFolderStructure, { createFolderStructureWith } from '../src'
-import * as fse from 'fs-extra'
-import * as pathExists from 'path-exists'
 import * as path from 'path'
+import createFolderStructure, { createFile, createFolder } from '../src'
 import { assertFileExist, assertFolderExist, TestContext } from './utils'
 
 const chance = Chance()
@@ -12,7 +10,7 @@ const test = testWithTypedContext as TestInterface<TestContext>
 
 test.afterEach(t => t.context?.cleanup && t.context?.cleanup())
 
-test('1 - multi folders structure', async t => {
+test('multi folders structure', async t => {
   const [hash1, hash2, hash3, hash4] = [chance.hash(), chance.hash(), chance.hash(), chance.hash()]
   const { entryPath, cleanup } = await createFolderStructure({
     entryName: 'folder1',
@@ -40,7 +38,7 @@ test('1 - multi folders structure', async t => {
   await assertFolderExist(t, path.join(entryPath, 'folder4/folder5'))
 })
 
-test('2 - multi folders structure without specifying entry-folder-name', async t => {
+test('multi folders structure without specifying entry-folder-name', async t => {
   const [hash1, hash2, hash3, hash4] = [chance.hash(), chance.hash(), chance.hash(), chance.hash()]
   const { entryPath, cleanup } = await createFolderStructure({
     content: {
@@ -67,7 +65,7 @@ test('2 - multi folders structure without specifying entry-folder-name', async t
   await assertFolderExist(t, path.join(entryPath, 'folder4/folder5'))
 })
 
-test('3 - entry is a file', async t => {
+test('entry is a file', async t => {
   const [hash1] = [chance.hash()]
   const { entryPath, cleanup } = await createFolderStructure({
     entryName: 'file1.txt',
@@ -79,7 +77,7 @@ test('3 - entry is a file', async t => {
   await assertFileExist(t, entryPath, hash1)
 })
 
-test('4 - entry is a file without specifying entry-file-name', async t => {
+test('entry is a file without specifying entry-file-name', async t => {
   const [hash1] = [chance.hash()]
   const { entryPath, cleanup } = await createFolderStructure({
     content: hash1,
@@ -90,7 +88,7 @@ test('4 - entry is a file without specifying entry-file-name', async t => {
   await assertFileExist(t, entryPath, hash1)
 })
 
-test('5 - entry is a folder', async t => {
+test('entry is a folder', async t => {
   const { entryPath, cleanup } = await createFolderStructure({
     entryName: 'folder1',
     content: {},
@@ -101,7 +99,7 @@ test('5 - entry is a folder', async t => {
   await assertFolderExist(t, entryPath)
 })
 
-test('6 - entry is a folder without specifying entry-file-name', async t => {
+test('entry is a folder without specifying entry-file-name', async t => {
   const { entryPath, cleanup } = await createFolderStructure({
     content: {},
   })
@@ -111,7 +109,7 @@ test('6 - entry is a folder without specifying entry-file-name', async t => {
   await assertFolderExist(t, entryPath)
 })
 
-test('7 - multi folders structure - with shortcuts', async t => {
+test('multi folders structur with shortcuts', async t => {
   const [hash1, hash2, hash3, hash4] = [chance.hash(), chance.hash(), chance.hash(), chance.hash()]
   const { entryPath, cleanup } = await createFolderStructure({
     entryName: 'folder1',
@@ -137,8 +135,7 @@ test('7 - multi folders structure - with shortcuts', async t => {
   await assertFolderExist(t, path.join(entryPath, 'folder6/folder7'))
 })
 
-test('8 - leafs with extension will automatically be files and not folders', async t => {
-  const [hash1, hash2, hash3, hash4] = [chance.hash(), chance.hash(), chance.hash(), chance.hash()]
+test('leafs with extension will automatically be files and not folders - json with single key', async t => {
   const { entryPath, cleanup } = await createFolderStructure({
     entryName: 'folder1',
     content: {
@@ -151,7 +148,7 @@ test('8 - leafs with extension will automatically be files and not folders', asy
   await assertFileExist(t, path.join(entryPath, 'file1.json'), JSON.stringify({}))
 })
 
-test('9 - leafs with extension will automatically be files and not folders', async t => {
+test('leafs with extension will automatically be files and not folders - json with multiple keys', async t => {
   const { entryPath, cleanup } = await createFolderStructure({
     entryName: 'folder1',
     content: {
@@ -167,7 +164,7 @@ test('9 - leafs with extension will automatically be files and not folders', asy
   await assertFileExist(t, path.join(entryPath, 'file1.json'), JSON.stringify({ a: 1, b: 2 }, null, 2))
 })
 
-test('10 - leafs with extension will automatically be files and not folders', async t => {
+test('leafs with extension will automatically be files and not folders - json with no keys', async t => {
   const { entryPath, cleanup } = await createFolderStructure({
     entryName: 'file1.json',
     content: {},
@@ -176,9 +173,10 @@ test('10 - leafs with extension will automatically be files and not folders', as
   t.context.cleanup = cleanup
 
   await assertFileExist(t, entryPath, JSON.stringify({}))
+  t.true(entryPath.endsWith('.json'))
 })
 
-test('11 - leafs with extension will automatically be files and not folders', async t => {
+test('leafs with extension will automatically be files and not folders - json with two keps', async t => {
   const { entryPath, cleanup } = await createFolderStructure({
     entryName: 'file1.json',
     content: {
@@ -192,7 +190,7 @@ test('11 - leafs with extension will automatically be files and not folders', as
   await assertFileExist(t, entryPath, JSON.stringify({ a: 1, b: 2 }, null, 2))
 })
 
-test('11 - non-json-extension will be a folder if the content is object', async t => {
+test('non-json-extension will be a folder if the content is object', async t => {
   const [hash1, hash2] = [chance.hash(), chance.hash()]
   const { entryPath, cleanup } = await createFolderStructure({
     entryName: 'file1.non_json',
@@ -209,11 +207,31 @@ test('11 - non-json-extension will be a folder if the content is object', async 
   await assertFileExist(t, path.join(entryPath, 'b'), hash2)
 })
 
-test('12 - createFolderStructureWith proxies to createFolderStructure', async t => {
+test('createFolder proxies to createFolderStructure', async t => {
   const hash = chance.hash()
-  const entryPath = await createFolderStructureWith({
+  const entryPath = await createFolder({
     'file.txt': hash,
   })
 
   await assertFileExist(t, path.join(entryPath, 'file.txt'), hash)
+})
+
+test('createFile proxies to createFolderStructure', async t => {
+  const hash = chance.hash()
+  const entryPath = await createFile({
+    key123: hash,
+  })
+
+  await assertFileExist(
+    t,
+    entryPath,
+    JSON.stringify(
+      {
+        key123: hash,
+      },
+      null,
+      2,
+    ),
+  )
+  t.true(entryPath.endsWith('.json'))
 })
