@@ -4,13 +4,15 @@ import * as tmp from 'tmp-promise'
 import * as mkdirp from 'mkdirp'
 import * as chance from 'chance'
 
+export type FolderStructureContent = string | {} | FolderStructure
+
 export type FolderStructure = {
-  [name: string]: string | FolderStructure
+  [name: string]: FolderStructureContent
 }
 
 export type EntryStructure = {
   entryName?: string
-  content: string | {} | FolderStructure
+  content: FolderStructureContent
 }
 
 export async function createFolder(content: FolderStructure): Promise<string> {

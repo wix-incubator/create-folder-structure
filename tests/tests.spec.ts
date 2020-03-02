@@ -216,6 +216,31 @@ test('createFolder proxies to createFolderStructure', async t => {
   await assertFileExist(t, path.join(entryPath, 'file.txt'), hash)
 })
 
+test('createFolder proxies to createFolderStructure - complex', async t => {
+  const hash = chance.hash()
+  const entryPath = await createFolder({
+    f1: {},
+    f2: {
+      'file1.json': {
+        a: hash,
+      },
+    },
+  })
+
+  await assertFolderExist(t, path.join(entryPath, 'f1'))
+  await assertFileExist(
+    t,
+    path.join(entryPath, 'f2', 'file1.json'),
+    JSON.stringify(
+      {
+        a: hash,
+      },
+      null,
+      2,
+    ),
+  )
+})
+
 test('createFile proxies to createFolderStructure', async t => {
   const hash = chance.hash()
   const entryPath = await createFile({
