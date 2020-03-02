@@ -12,6 +12,11 @@ export type EntryStructure = {
   content: string | {} | FolderStructure
 }
 
+export async function createFolderStructureWith(content: string | {} | FolderStructure): Promise<string> {
+  const originalResult = await createFolderStructure({ content })
+  return originalResult.entryPath
+}
+
 export default async function createFolderStructure(
   structure: EntryStructure,
 ): Promise<{

@@ -1,6 +1,6 @@
 import * as Chance from 'chance'
 import testWithTypedContext, { TestInterface, ExecutionContext } from 'ava'
-import createFolderStructure from '../src'
+import createFolderStructure, { createFolderStructureWith } from '../src'
 import * as fse from 'fs-extra'
 import * as pathExists from 'path-exists'
 import * as path from 'path'
@@ -207,4 +207,13 @@ test('11 - non-json-extension will be a folder if the content is object', async 
   await assertFolderExist(t, entryPath)
   await assertFileExist(t, path.join(entryPath, 'a'), hash1)
   await assertFileExist(t, path.join(entryPath, 'b'), hash2)
+})
+
+test('12 - createFolderStructureWith proxies to createFolderStructure', async t => {
+  const hash = chance.hash()
+  const entryPath = await createFolderStructureWith({
+    'file.txt': hash,
+  })
+
+  await assertFileExist(t, path.join(entryPath, 'file.txt'), hash)
 })
