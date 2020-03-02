@@ -1,6 +1,6 @@
 {
   "name": "create-folder-structure",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "main": "dist/index.js",
   "author": "stavalfi <stava@wix.com>",
   "license": "MIT",
@@ -10,7 +10,8 @@
   },
   "scripts": {
     "test": "ava",
-    "build": "yarn pretty-quick && yarn clean && tsc",
+    "lint": "eslint --max-warnings 0 '{src,tests}/**/*.{ts,js,json,d.ts}'",
+    "build": "yarn pretty-quick && yarn lint && yarn clean && tsc",
     "clean": "rm -rf dist",
     "prepublish": "yarn clean && yarn test && yarn build"
   },
@@ -19,16 +20,23 @@
     "fs-extra": "^8.1.0",
     "mkdirp": "^0.5.1",
     "pretty-quick": "^2.0.1",
-    "tmp-promise": "^2.0.2"
+    "tmp-promise": "^2.0.2",
+    "chance": "^1.1.4"
   },
   "devDependencies": {
+    "eslint": "6.5.1",
+    "@typescript-eslint/eslint-plugin": "^2.14.0",
+    "@typescript-eslint/parser": "^2.14.0",
+    "eslint-config-prettier": "4.3.0",
+    "eslint-plugin-jest": "22.6.4",
+    "eslint-plugin-json": "^2.0.1",
+    "eslint-plugin-prettier": "^3.1.2",
     "@types/chance": "^1.0.8",
     "@types/fs-extra": "^8.0.1",
     "@types/mkdirp": "^0.5.2",
     "@types/node": "^13.1.0",
     "@types/path-exists": "^4.0.2",
     "ava": "^2.4.0",
-    "chance": "^1.1.4",
     "is-directory": "^0.3.1",
     "path-exists": "^4.0.0",
     "prettier": "^1.19.1",
