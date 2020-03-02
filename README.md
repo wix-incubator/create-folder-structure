@@ -94,3 +94,28 @@ yarn add --dev create-folder-structure
      },
    })
    ```
+
+---
+
+`createFolderStructureWith` is a syntax sugar provided for `createFolderStructure` in order to reduce the boilerplate
+
+
+1. Create anonymous folder
+
+   ```typescript
+   import {createFolderStructureWith} from 'create-folder-structure'
+
+   const entryPath = await createFolderStructureWith({
+       file7: 'file content7',
+       ['folder6/folder7']: {},
+     })
+   ```
+
+2. Create anonymous file
+
+   ```typescript
+   import {createFolderStructureWith} from 'create-folder-structure'
+
+   const entryPath = await createFolderStructureWith('file content1')
+   ```
+
