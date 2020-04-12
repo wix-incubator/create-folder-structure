@@ -260,3 +260,13 @@ test('createFile proxies to createFolderStructure', async t => {
   )
   t.true(entryPath.endsWith('.json'))
 })
+
+test('createFolder without params', async t => {
+  const entryPath = await createFolder()
+  await assertFolderExist(t, entryPath)
+})
+
+test('createFile without params', async t => {
+  const entryPath = await createFile()
+  await assertFileExist(t, entryPath, '')
+})

@@ -15,12 +15,12 @@ export type EntryStructure = {
   content: FolderStructureContent
 }
 
-export async function createFolder(content: FolderStructure): Promise<string> {
+export async function createFolder(content: FolderStructure = {}): Promise<string> {
   const originalResult = await createFolderStructure({ content })
   return originalResult.entryPath
 }
 
-export async function createFile(content: string | {}): Promise<string> {
+export async function createFile(content: string | {} = ''): Promise<string> {
   const fileName = `${chance()
     .hash()
     .toLocaleLowerCase()}.json`
