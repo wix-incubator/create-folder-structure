@@ -1,6 +1,6 @@
 {
   "name": "create-folder-structure",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "main": "dist/index.js",
   "author": "stavalfi <stava@wix.com>",
   "license": "MIT",
@@ -16,10 +16,8 @@
     "prepublish": "yarn clean && yarn test && yarn build"
   },
   "dependencies": {
-    "@types/tmp": "^0.1.0",
     "fs-extra": "^8.1.0",
     "mkdirp": "^0.5.1",
-    "pretty-quick": "^2.0.1",
     "tmp-promise": "^2.0.2",
     "chance": "^1.1.4"
   },
@@ -36,10 +34,12 @@
     "@types/mkdirp": "^0.5.2",
     "@types/node": "^13.1.0",
     "@types/path-exists": "^4.0.2",
+    "@types/tmp": "^0.1.0",
     "ava": "^2.4.0",
     "is-directory": "^0.3.1",
     "path-exists": "^4.0.0",
     "prettier": "^1.19.1",
+    "pretty-quick": "^2.0.1",
     "ts-node": "^8.5.4",
     "typescript": "^3.7.4"
   },
